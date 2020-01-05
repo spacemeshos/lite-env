@@ -60,7 +60,6 @@
   "editable": true,
   "gnetId": 10826,
   "graphTooltip": 0,
-  "id": 1,
   "iteration": 1577376461489,
   "links": [],
   "panels": [
@@ -1385,7 +1384,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 21,
   "style": "dark",
   "tags": [
@@ -1398,7 +1397,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
           "text": "/sm_node_1",
           "value": "/sm_node_1"
         },
@@ -1414,7 +1412,7 @@
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 3,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -1455,5 +1453,5 @@
   "timezone": "utc",
   "title": "Go Metrics",
   "uid": "CgCw8jKZz",
-  "version": 2
+  "version": 1
 }

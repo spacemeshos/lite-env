@@ -1,12 +1,13 @@
 #!/bin/sh
 # set -e
 
+apk -q add wget
+
 if [ "$BOOTSTRAP_NODE" = true ] ; then
   echo "- BOOTSTRAP MODE -"
   export GENESIS=$(date -d "@$(($(date +%s) + $GENESIS_SEC_DELAY))" --utc +%Y-%m-%dT%H:%M:%S+00:00)
 else
-  export GENESIS=$(wget -qO- --retry-on-http-error=500,503 --post-data ''  http://bs_node:9090/v1/genesis | awk 'BEGIN { FS="\""; RS="," }; { if ($2 == "value") {print $4} }')
-  export GENESIS=$(echo "$GENESIS" | awk -F"[ ]+" '{print $1"T"$2"+00:00"}')
+  export GENESIS=$(wget -qO- --retry-on-http-error=500,503 --post-data '' -w 1 --retry-connrefused bs_node:9090/v1/genesis | awk 'BEGIN { FS="\""; RS="," }; { if ($2 == "value") {print $4} }')
   export MINER="\
     --start-mining \
     --bootstrap \
@@ -36,14 +37,17 @@ echo "MINER: $MINER"
     --eligibility-epoch-offset $ELIGIBILITY_EPOCH_OFFSET \
     --genesis-active-size $GENESIS_ACTIVE_SIZE \
     --genesis-time "$GENESIS" \
-    --poet-server "poet:$POET_RPC_PORT" \
-    --metrics-port $METRICS_PORT \
+    --poet-server "${POET_URL}:50002" \
+    --metrics-port 2020 \
     $MINER &
 
 bg_pid=$!
 
 if $BOOTSTRAP_NODE ; then
-  wget -qO- --post-data '{ "nodeAddress": "bs_node:9091" }' http://poet:$POET_REST_PORT/v1/start
+  wget -qO- --tries=0 --retry-connrefused --post-data '{ "gatewayAddresses": ["'${BS_NODE_URL}':9091"] }' ${POET_URL}:8080/v1/start
+  echo "- POET STARTED -"
+else
+  echo "- MINING -"
 fi
 
 wait $bg_pid

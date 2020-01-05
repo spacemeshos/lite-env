@@ -32,7 +32,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
   "iteration": 1577011014275,
   "links": [],
   "panels": [
@@ -924,7 +923,7 @@
       "type": "table"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 20,
   "style": "dark",
   "tags": [
@@ -935,7 +934,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
           "text": "/sm_node_1",
           "value": "/sm_node_1"
         },
@@ -981,5 +979,5 @@
   "timezone": "",
   "title": "Spacemesh Dashbaord",
   "uid": "8BQ9weJZk",
-  "version": 14
+  "version": 1
 }

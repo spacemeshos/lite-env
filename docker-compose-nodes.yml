@@ -1,0 +1,67 @@
+version: "3.7"
+
+services:
+  bs_node:
+    container_name: bs_node
+    image: spacemeshos/go-spacemesh:develop
+    env_file: ./defaults.env
+    environment:
+      - BOOTSTRAP_NODE=true
+      - POET_URL=$POET_URL
+      - BS_NODE_URL=$BS_NODE_URL
+      - ELASTICSEARCH_URL=$ELASTICSEARCH_URL
+    volumes:
+      - pk:/root/spacemesh/nodes
+      - ./node-entrypoint.sh:/entrypoint.sh
+    entrypoint: sh /entrypoint.sh
+    ports:
+      - 2020:2020
+      - 9091:9091
+      # - 9999:9090
+      - 7513:7513
+    logging:
+      driver: fluentd
+      options:
+        tag: sm.{{.Name}}
+        fluentd-address: "${FLUENT_BIT_URL}:24224"
+        fluentd-async-connect: 'true'
+    cap_add:
+      - NET_ADMIN
+  
+  node:
+    image: spacemeshos/go-spacemesh:develop
+    env_file: ./defaults.env
+    environment:
+      - POET_URL=$POET_URL
+    volumes:
+      - pk:/root/spacemesh/pk:ro
+      - ./node-entrypoint.sh:/entrypoint.sh
+    entrypoint: sh /entrypoint.sh
+    logging:
+      driver: fluentd
+      options:
+        tag: sm.{{.Name}}
+        fluentd-address: "${FLUENT_BIT_URL}:24224"
+        fluentd-async-connect: 'true'
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      - bs_node
+  
+  prometheus:
+    container_name: prometheus
+    env_file: ./defaults.env
+    image: prom/prometheus
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      # - dig +short node | awk '{printf (NR>1?":2020, ":"") $1}'
+    ports:
+      - 9090:9090
+
+volumes:
+  pk:
