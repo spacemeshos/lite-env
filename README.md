@@ -1,8 +1,8 @@
 # sm
 A lite development and testing framework for Spacemesh using docker compose.
 
-Running: `./create-all.sh`
-Stopping: `./delete-all.sh`
+Running: `./create-all.sh`<br>
+Stopping: `./delete-all.sh`<br>
 
 - Defaults are loaded from .gcp.env and defaults.env
 - POET number of leaves is set inside create-poet.sh (--container-arg)
