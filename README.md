@@ -1,18 +1,15 @@
 # sm
 A lite development and testing framework for Spacemesh using docker compose.
 
-Running: `docker-compose up --scale node=<number of nodes>`
-Stopping: `docker-compose down -v`
+Running: `./create-all.sh`<br>
+Stopping: `./delete-all.sh`<br>
 
-- To force image build add: `--build`
-- List services: `docker-compose ps`
-- To open shell inside a running container: `docker exec -it <name> sh`
-- Defaults are loaded from defaults.env and overridden inside docker.compose.yml with "environment:"
-- Fluentbit logs are saved under ./logs
+- Defaults are loaded from .gcp.env and defaults.env
+- POET number of leaves is set inside create-poet.sh (--container-arg)
+- The amount of miners is set inside create-nodes.sh (--metadata)
 
 Local sites:
-- Kibana: http://localhost:5601
-- Prometheus: http://localhost:9999
-- Grafana: http://localhost:3000
-- Elasticsearch: http://localhost:9200
-- Cerebro: http://localhost:9000
+- Kibana: http://metrics.unruly.io:5601
+- Prometheus: http://nodes.unruly.io:9090
+- Grafana: http://metrics.unruly.io:3000
+- Elasticsearch: http://metrics.unruly.io:9200
