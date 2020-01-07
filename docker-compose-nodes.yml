@@ -9,7 +9,7 @@ services:
       - BOOTSTRAP_NODE=true
       - POET_URL=$POET_URL
       - BS_NODE_URL=$BS_NODE_URL
-      - ELASTICSEARCH_URL=$ELASTICSEARCH_URL
+      - NUM_NODES=$NUM_NODES
     volumes:
       - pk:/root/spacemesh/nodes
       - ./node-entrypoint.sh:/entrypoint.sh
@@ -17,7 +17,7 @@ services:
     ports:
       - 2020:2020
       - 9091:9091
-      # - 9999:9090
+      - 9999:9090
       - 7513:7513
     logging:
       driver: fluentd
@@ -33,6 +33,7 @@ services:
     env_file: ./defaults.env
     environment:
       - POET_URL=$POET_URL
+      - NUM_NODES=$NUM_NODES
     volumes:
       - pk:/root/spacemesh/pk:ro
       - ./node-entrypoint.sh:/entrypoint.sh

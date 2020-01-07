@@ -1,1 +1,8 @@
-{"type":"index-pattern","id":"sm","attributes":{"title":"sm*","timeFieldName":"@timestamp"}}
+{
+  "type": "index-pattern",
+  "id": "sm",
+  "attributes": {
+    "title": "sm*",
+    "timeFieldName": "@timestamp"
+  }
+}

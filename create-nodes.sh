@@ -11,16 +11,21 @@ if (( $(gcloud compute instances list --filter="name=(nodes)" 2> /dev/null | wc 
 fi
 
 out_nodes "Creating new VM"
+(export NUM_NODES=${1:-50} && \
+out_nodes "NUM_NODES=$NUM_NODES" && \
 gcloud compute instances create nodes \
    --zone us-east1-b \
    --image cos-stable-78-12499-89-0 \
    --image-project cos-cloud \
-   --machine-type=n1-standard-32 \
+   --custom-vm-type n1 \
+   --custom-cpu 36 \
+   --custom-memory 128 \
    --boot-disk-type=pd-ssd \
    --boot-disk-size=1024GB \
    --address 34.73.217.215 \
    --tags nodes \
-   --metadata startup-script-url=gs://spacemesh/sm/nodes-startup.sh,nodes=50
+   --hostname=nodes.sm \
+   --metadata startup-script-url=gs://spacemesh/sm/nodes-startup.sh,nodes=$NUM_NODES)
 
 # out_nodes "Waiting for response"
 # until $(curl --output /dev/null --silent --fail -d '' http://nodes.unruly.io:9999/v1/genesis); do
