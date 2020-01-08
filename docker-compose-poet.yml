@@ -4,12 +4,10 @@ services:
   poet:
     container_name: poet
     image: spacemeshos/poet:develop
-    environment:
-      - NUM_LEAVES=${NUM_LEAVES:-19}
     command:
       - '--rpclisten=0.0.0.0:50002'
       - '--restlisten=0.0.0.0:8080'
-      - '--n=$$NUM_LEAVES'
+      - '--n=${NUM_LEAVES:-19}'
       - '--jsonlog'
     ports:
       - 50002:50002

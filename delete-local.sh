@@ -7,4 +7,5 @@ docker-compose -f docker-compose-nodes.yml down -v &
 
 wait
 
-docker volume rm sm_es_data
+docker volume prune -f
+docker network prune -f

@@ -9,7 +9,7 @@ services:
       - es_data:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
+      # - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
     ports:
       - 9200:9200
     restart: on-failure

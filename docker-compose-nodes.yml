@@ -27,6 +27,13 @@ services:
         fluentd-async-connect: 'true'
     cap_add:
       - NET_ADMIN
+    extra_hosts:
+      - "0.pool.ntp.org:169.254.169.254"
+      - "1.pool.ntp.org:169.254.169.254"
+      - "time.google.com:169.254.169.254"
+      - "time1.google.com:169.254.169.254"
+      - "time.asia.apple.com:169.254.169.254"
+      - "time.americas.apple.com:169.254.169.254"
   
   node:
     image: spacemeshos/go-spacemesh:develop
@@ -48,6 +55,13 @@ services:
       - NET_ADMIN
     depends_on:
       - bs_node
+    extra_hosts:
+      - "0.pool.ntp.org:169.254.169.254"
+      - "1.pool.ntp.org:169.254.169.254"
+      - "time.google.com:169.254.169.254"
+      - "time1.google.com:169.254.169.254"
+      - "time.asia.apple.com:169.254.169.254"
+      - "time.americas.apple.com:169.254.169.254"
   
   prometheus:
     container_name: prometheus
@@ -66,3 +80,4 @@ services:
 
 volumes:
   pk:
+    

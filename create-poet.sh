@@ -23,9 +23,9 @@ gcloud compute instances create-with-container poet \
    --container-arg="--n" \
    --container-arg="$NUM_LEAVES" \
    --container-arg="--jsonlog" \
-   --machine-type=e2-highmem-4 \
+   --machine-type=e2-highmem-2 \
    --boot-disk-type=pd-standard \
-   --boot-disk-size=1TB \
+   --boot-disk-size=512GB \
    --address 35.231.54.161 \
    --tags poet)
 
