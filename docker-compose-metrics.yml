@@ -9,7 +9,12 @@ services:
       - es_data:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
-      # - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
+    ulimits:
+      memlock:
+        soft: "-1"
+        hard: "-1"
     ports:
       - 9200:9200
     restart: on-failure
@@ -18,6 +23,8 @@ services:
     container_name: kibana
     env_file: ./defaults.env
     image: gcr.io/spacemesh-198810/kibana:7.5.1
+    environment:
+      - ELASTICSEARCH_HOSTS="http://elasticsearch:9200"
     ports: 
       - 5601:5601
 
@@ -26,7 +33,8 @@ services:
     env_file: ./defaults.env
     image: fluent/fluent-bit
     volumes:
-      - ./config/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./config/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./config/parsers.conf:/fluent-bit/etc/parsers.conf:ro
     ports:
       - 24224:24224
       - 24224:24224/udp
@@ -43,6 +51,8 @@ services:
     volumes:
       - ./config/grafana/datasources:/etc/grafana/provisioning/datasources
       - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards
+    tmpfs:
+      - /var/lib/grafana
     ports:
       - 3000:3000
 

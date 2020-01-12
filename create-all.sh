@@ -6,9 +6,8 @@ gsutil -q cp .gcp.env gs://spacemesh/sm/.env
 
 ./delete-all.sh
 
-./create-poet.sh $2 &
+(./create-poet.sh && ./create-nodes.sh) &
 ./create-metrics.sh &
 
 wait
-
-./create-nodes.sh $1
+echo "  - DONE! -"

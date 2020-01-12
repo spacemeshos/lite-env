@@ -12,17 +12,17 @@ else
   echo "- MINER NODE -"
   export GENESIS=$(wget -qO- --retry-on-http-error=500,503 --post-data '' -w 1 --retry-connrefused bs_node:9090/v1/genesis | awk 'BEGIN { FS="\""; RS="," }; { if ($2 == "value") {print $4} }')
   export MINER="\
-    --start-mining \
     --bootstrap \
     --bootnodes spacemesh://`ls /root/spacemesh/pk/`@`getent hosts bs_node | awk '{ print $1 }'`:7513"
 fi
 
 set -o xtrace
 
+# printf '[logging]\nhare = "debug"' > config.toml
+
 /bin/go-spacemesh \
     --test-mode \
     --metrics \
-    --pprof-server \
     --grpc-server \
     --json-server \
     --randcon $RANDCON \
@@ -41,13 +41,14 @@ set -o xtrace
     --genesis-time "$GENESIS" \
     --poet-server "${POET_URL}:50002" \
     --metrics-port 2020 \
+    --start-mining \
     $MINER &
 
 set +o xtrace
 
 bg_pid=$!
 
-if $BOOTSTRAP_NODE ; then
+if [ "$BOOTSTRAP_NODE" = true ] ; then
   wget -qO- --tries=0 --retry-connrefused --post-data '{ "gatewayAddresses": ["'${BS_NODE_URL}':9091"] }' ${POET_URL}:8080/v1/start
   echo "- POET STARTED -"
 fi
