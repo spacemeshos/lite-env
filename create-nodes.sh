@@ -24,6 +24,8 @@ gcloud compute instances create nodes \
    --boot-disk-size=256GB \
    --address 34.73.217.215 \
    --tags nodes \
+   --service-account sm-999@spacemesh-198810.iam.gserviceaccount.com \
+   --scopes compute-rw,storage-rw \
    --metadata startup-script-url=gs://spacemesh/sm/nodes-startup.sh
 
 out_nodes "Waiting for POET started"

@@ -23,6 +23,8 @@ gcloud compute instances create metrics \
    --boot-disk-size=100GB \
    --address 34.74.67.41 \
    --tags metrics \
+   --service-account sm-999@spacemesh-198810.iam.gserviceaccount.com \
+   --scopes compute-rw,storage-rw \
    --metadata startup-script-url=gs://spacemesh/sm/metrics-startup.sh
 
 out_metrics "Waiting for response"
