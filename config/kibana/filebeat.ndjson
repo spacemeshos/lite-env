@@ -1,0 +1,5 @@
+{"type":"index-pattern","id":"filebeat","attributes":{"title":"filebeat*","timeFieldName":"@timestamp"}}
+{"type":"config","attributes":{"defaultIndex":"filebeat"}}
+{"type":"query","id":"[INFO] New block","attributes":{"title":"[INFO] New block","query":{"language":"kuery","query":"\"\\\"I've created a block in layer \\\"\""}}}
+{"type":"query","id":"[ERROR] PreRound","attributes":{"title":"[ERROR] PreRound","query":{"language":"kuery","query":"\"\\\"Fatal: PreRound ended with empty set\\\"\""}}}
+{"type":"query","id":"[ERROR] NTP drift","attributes":{"title":"[ERROR] NTP drift","query":{"language":"kuery","query":"\"\\\"please synchronize your OS\\\"\""}}}

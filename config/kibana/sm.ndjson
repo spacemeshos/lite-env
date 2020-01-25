@@ -1,5 +1,0 @@
-{"type":"index-pattern","id":"sm","attributes":{"title":"sm*","timeFieldName":"@timestamp"}}
-{"type":"config","attributes":{"defaultIndex":"sm"}}
-{"type":"query","id":"Created block","attributes":{"title":"Created block","query":{"language":"kuery","query":"\"\\\"I've created a block in layer \\\"\""}}}
-{"type":"query","id":"PreRound ended","attributes":{"title":"PreRound ended","query":{"language":"kuery","query":"\"\\\"Fatal: PreRound ended with empty set\\\"\""}}}
-{"type":"query","id":"NTP drift","attributes":{"title":"NTP drift","query":{"language":"kuery","query":"\"\\\"please synchronize your OS\\\"\""}}}

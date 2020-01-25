@@ -2,12 +2,13 @@ version: "3.7"
 
 services:
   elasticsearch:
-    env_file: ./defaults.env
+    env_file: ./config.env
     container_name: elasticsearch
-    image: gcr.io/spacemesh-198810/elasticsearch:7.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     volumes:
       - es_data:/usr/share/elasticsearch/data
     environment:
+      - COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
@@ -17,33 +18,27 @@ services:
         hard: "-1"
     ports:
       - 9200:9200
-    restart: on-failure
+    user: elasticsearch
+    command: >
+      /bin/sh -c "./bin/elasticsearch-plugin install repository-gcs; 
+      /usr/local/bin/docker-entrypoint.sh"
   
   kibana:
     container_name: kibana
-    env_file: ./defaults.env
-    image: gcr.io/spacemesh-198810/kibana:7.5.1
+    env_file: ./config.env
+    image: docker.elastic.co/kibana/kibana:7.5.1
     environment:
+      - COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
       - ELASTICSEARCH_HOSTS="http://elasticsearch:9200"
     ports: 
       - 5601:5601
-
-  fluentbit:
-    container_name: fluentbit
-    env_file: ./defaults.env
-    image: fluent/fluent-bit
-    volumes:
-      - ./config/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
-      - ./config/parsers.conf:/fluent-bit/etc/parsers.conf:ro
-    ports:
-      - 24224:24224
-      - 24224:24224/udp
       
   grafana:
     container_name: grafana
-    image: grafana/grafana
-    env_file: ./defaults.env
+    image: grafana/grafana:6.5.2
+    env_file: ./config.env
     environment:
+      - COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
       - PROMETHEUS_URL=${PROMETHEUS_URL}
       - GF_AUTH_DISABLE_LOGIN_FORM=true
       - GF_AUTH_ANONYMOUS_ENABLED=true

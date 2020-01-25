@@ -1,13 +1,17 @@
-# sm
-A lite development and testing framework for Spacemesh using docker compose.
+# Spacemesh Lite Environment on GCP
+**A small development framework for testing spacemesh miners.**
 
-Running: `./create-all.sh`<br>
-Stopping: `./delete-all.sh`<br>
+**Run:** `./create-all.sh`<br>
+*\* remember to edit config.env before running*<br>
 
-Defaults are loaded from .gcp.env and defaults.env
+**Stop:** `./delete-all.sh`<br>
 
-Local sites:
-- Elasticsearch: http://metrics.unruly.io:9200
+**Metrics:**
 - Kibana: http://metrics.unruly.io:5601
 - Grafana: http://metrics.unruly.io:3000
 - Prometheus: http://nodes.unruly.io:9090
+
+**To add your own miner to the mesh:**
+- Download the config.toml file from here: http://nodes.unruly.io
+- Run: `go-spacemesh --start-mining --coinbase <account num> --tcp-port <listening port>`
+

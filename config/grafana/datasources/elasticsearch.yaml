@@ -5,7 +5,7 @@ datasources:
     type: elasticsearch
     access: proxy
     url: http://elasticsearch:9200
-    database: "sm"
+    database: ${COMPOSE_PROJECT_NAME}
     jsonData:
       timeField: "@timestamp"
       esVersion: 70

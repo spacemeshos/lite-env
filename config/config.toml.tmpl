@@ -1,0 +1,32 @@
+[main]
+genesis-time = "${GENESIS_TIME}"
+layer-duration-sec = "${LAYER_DURATION_SEC}"
+layer-average-size = "${LAYER_AVERAGE_SIZE}"
+layers-per-epoch = "${LAYERS_PER_EPOCH}"
+genesis-active-size = "${NUM_NODES}"
+poet-server = "${POET_URL}:50002"
+
+[p2p]
+network-id = "${NET_ID}"
+
+[p2p.swarm]
+bootstrap = ${BOOTSTRAP}
+randcon = "${RANDCON}"
+bootnodes = [${P2P}]
+
+[api]
+
+[time]
+
+[hare]
+hare-round-duration-sec = "${HARE_ROUND_DURATION_SEC}"
+hare-committee-size = "${HARE_COMMITTEE_SIZE}"
+hare-max-adversaries = "${HARE_MAX_ADVERSARIES}"
+hare-exp-leaders = "${HARE_EXP_LEADERS}"
+hare-wakeup-delta = "${HARE_WAKEUP_DELTA}"
+
+[hare-eligibility]
+eligibility-confidence-param = "${ELIGIBILITY_CONFIDENCE_PARAM}"
+eligibility-epoch-offset = "${ELIGIBILITY_EPOCH_OFFSET}"
+
+[logging]

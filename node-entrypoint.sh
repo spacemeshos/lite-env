@@ -1,54 +1,51 @@
 #!/bin/sh
 # set -e
 
-apk -q add wget
+apk -q add --update wget curl jq iptables gettext
 
-if [ "$BOOTSTRAP_NODE" = true ] ; then
+export NODES_IP=$(getent hosts ${BS_NODE_URL} | awk '{ print $1 }')
+export EXT_PORT=7513
+export COINBASE="0x1234"
+
+if ! $BOOTSTRAP ; then
   echo "- BOOTSTRAP NODE -"
   echo "- NUM_NODES=$NUM_NODES -"
-  export GENESIS=$(date -d "@$(($(date +%s) + $GENESIS_SEC_DELAY))" --utc +%Y-%m-%dT%H:%M:%S+00:00)
-  echo "- GENESIS: $GENESIS -"
+  wget -qO- --tries=0 --retry-connrefused ${POET_URL}:8080/v1/info
+  export GENESIS_TIME=$(date -d "@$(($(date +%s) + $GENESIS_SEC_DELAY))" --utc +%Y-%m-%dT%H:%M:%S+00:00)
+  echo "- GENESIS_TIME: $GENESIS_TIME -"
+  envsubst < /root/config/config.toml.tmpl > ./config.toml
 else
   echo "- MINER NODE -"
-  export GENESIS=$(wget -qO- --retry-on-http-error=500,503 --post-data '' -w 1 --retry-connrefused bs_node:9090/v1/genesis | awk 'BEGIN { FS="\""; RS="," }; { if ($2 == "value") {print $4} }')
-  export MINER="\
-    --bootstrap \
-    --bootnodes spacemesh://`ls /root/spacemesh/pk/`@`getent hosts bs_node | awk '{ print $1 }'`:7513"
+  export EXT_PORT=$(curl --unix-socket /var/run/docker.sock http://localhost/containers/${HOSTNAME}/json | jq -r '.NetworkSettings.Ports."7513/tcp"[0].HostPort')
+  iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 7513 -j REDIRECT --to-port ${EXT_PORT}
+  iptables -t nat -A PREROUTING -i eth0 -p udp --dport 7513 -j REDIRECT --to-port ${EXT_PORT}
+  iptables-save
+  until [ -f /root/config/config.toml ]; do sleep 1; done
+  cp  /root/config/config.toml ./config.toml
 fi
 
 set -o xtrace
 
-# printf '[logging]\nhare = "debug"' > config.toml
-
 /bin/go-spacemesh \
     --test-mode \
-    --metrics \
     --grpc-server \
     --json-server \
-    --randcon $RANDCON \
-    --hare-committee-size $HARE_COMMITTEE_SIZE \
-    --hare-max-adversaries $HARE_MAX_ADVERSARIES \
-    --hare-round-duration-sec $HARE_ROUND_DURATION_SEC \
-    --hare-exp-leaders $HARE_EXP_LEADERS \
-    --layer-duration-sec $LAYER_DURATION_SEC \
-    --layer-average-size $LAYER_AVERAGE_SIZE \
-    --hare-wakeup-delta $HARE_WAKEUP_DELTA \
-    --layers-per-epoch $LAYERS_PER_EPOCH \
-    --coinbase $COINBASE \
-    --eligibility-confidence-param $ELIGIBILITY_CONFIDENCE_PARAM \
-    --eligibility-epoch-offset $ELIGIBILITY_EPOCH_OFFSET \
-    --genesis-active-size $NUM_NODES \
-    --genesis-time "$GENESIS" \
-    --poet-server "${POET_URL}:50002" \
-    --metrics-port 2020 \
+    --metrics \
     --start-mining \
-    $MINER &
+    --coinbase $COINBASE \
+    --tcp-port $EXT_PORT &
 
 set +o xtrace
 
 bg_pid=$!
 
-if [ "$BOOTSTRAP_NODE" = true ] ; then
+until [ -d /root/spacemesh/nodes ]; do sleep 1; done
+export P2P="\"spacemesh://`ls /root/spacemesh/nodes`@${NODES_IP}:${EXT_PORT}\""
+echo "P2P: $P2P"
+
+if ! $BOOTSTRAP ; then
+  export BOOTSTRAP=true
+  envsubst < /root/config/config.toml.tmpl > /root/config/config.toml
   wget -qO- --tries=0 --retry-connrefused --post-data '{ "gatewayAddresses": ["'${BS_NODE_URL}':9091"] }' ${POET_URL}:8080/v1/start
   echo "- POET STARTED -"
 fi

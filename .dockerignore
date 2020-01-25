@@ -1,7 +1,6 @@
 *
 !config
-!*.env
-!defaults.env
+!config.env
 !docker-compose-*.yml
 !*-entrypoint.sh
 !*-startup.sh
