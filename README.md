@@ -1,17 +1,18 @@
 # Spacemesh Lite Environment on GCP
-**A small development framework for testing spacemesh miners.**
-
 **Run:** `./create-all.sh`<br>
 *\* remember to edit config.env before running*<br>
 
 **Stop:** `./delete-all.sh`<br>
 
-**Metrics:**
+**Rerun with updated config.env:** `./update-all.sh`<br>
+*\* this is much faster than stopping and running again*<br>
+
+**Links to metrics:**
 - Kibana: http://metrics.unruly.io:5601
 - Grafana: http://metrics.unruly.io:3000
 - Prometheus: http://nodes.unruly.io:9090
 
-**To add your own miner to the mesh:**
-- Download the config.toml file from here: http://nodes.unruly.io
+**Add your own miner:**
+- Download config.toml from: http://nodes.unruly.io
 - Run: `go-spacemesh --start-mining --coinbase <account num> --tcp-port <listening port>`
 

@@ -9,7 +9,7 @@ export COINBASE="0x1234"
 
 if ! $BOOTSTRAP ; then
   echo "- BOOTSTRAP NODE -"
-  echo "- NUM_NODES=$NUM_NODES -"
+  echo "- GENESIS_ACTIVE_SIZE=$GENESIS_ACTIVE_SIZE -"
   wget -qO- --tries=0 --retry-connrefused ${POET_URL}:8080/v1/info
   export GENESIS_TIME=$(date -d "@$(($(date +%s) + $GENESIS_SEC_DELAY))" --utc +%Y-%m-%dT%H:%M:%S+00:00)
   echo "- GENESIS_TIME: $GENESIS_TIME -"

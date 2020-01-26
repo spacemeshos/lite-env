@@ -7,7 +7,7 @@ out_nodes () {
 
 . .gcp.env
 . config.env
-out_nodes "NUM_NODES=$NUM_NODES"
+out_nodes "GENESIS_ACTIVE_SIZE=$GENESIS_ACTIVE_SIZE"
 
 if (( $(gcloud compute instances list --filter="name=(nodes)" 2> /dev/null | wc -l | awk '{print $1}') > 0 )); then
   out_nodes "Deleting old VM"

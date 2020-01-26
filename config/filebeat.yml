@@ -1,22 +1,26 @@
-filebeat.inputs:
-- type: container
-  paths: 
-    - '/var/lib/docker/containers/*/*.log'
-  
-processors:
-- add_docker_metadata:
-    host: "unix:///var/run/docker.sock"
-
-- decode_json_fields:
-    fields: ["message"]
-    target: ""
-    overwrite_keys: true
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      templates:
+        - condition:
+            equals:
+              docker.container.labels.app: go-spacemesh
+          config:
+            - type: container
+              paths:
+                - /var/lib/docker/containers/${data.docker.container.id}/*.log
+              json.keys_under_root: true
+              json.overwrite_keys: true
+              json.add_error_key: false
+              json.ignore_decoding_error: true
+              processors:
+                - add_docker_metadata:
+                    host: "unix:///var/run/docker.sock"
 
 output.elasticsearch:
   hosts: ["${ELASTICSEARCH_URL}:9200"]
   indices:
-    - index: "filebeat-%{[agent.version]}-%{+yyyy.MM.dd}"
+    - index: "sm-%{+yyyy.MM.dd-HH:mm}"
 
 logging.json: true
 logging.metrics.enabled: false
-  
