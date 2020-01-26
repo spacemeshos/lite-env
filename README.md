@@ -1,20 +1,17 @@
-# sm
-A lite development and testing framework for Spacemesh using docker compose.
+# Spacemesh Lite Environment on GCP
+**A small development framework for testing spacemesh miners.**
 
-Running: `docker-compose up --scale node=<number of nodes>`
-<br>
-Stopping: `docker-compose down -v`
+**Run:** `./create-all.sh`<br>
+*\* remember to edit config.env before running*<br>
 
-Good to know:
-- To force image build add: `--build`
-- List services: `docker-compose ps`
-- To open shell inside a running container: `docker exec -it <name> sh`
-- Defaults are loaded from defaults.env and overridden inside docker.compose.yml with "environment:"
-- Fluentbit logs are saved under ./logs
+**Stop:** `./delete-all.sh`<br>
 
-Local websites:
-- Kibana: http://localhost:5601
-- Prometheus: http://localhost:9999
-- Grafana: http://localhost:3000
-- Elasticsearch: http://localhost:9200
-- Cerebro: http://localhost:9000
+**Metrics:**
+- Kibana: http://metrics.unruly.io:5601
+- Grafana: http://metrics.unruly.io:3000
+- Prometheus: http://nodes.unruly.io:9090
+
+**To add your own miner to the mesh:**
+- Download the config.toml file from here: http://nodes.unruly.io
+- Run: `go-spacemesh --start-mining --coinbase <account num> --tcp-port <listening port>`
+

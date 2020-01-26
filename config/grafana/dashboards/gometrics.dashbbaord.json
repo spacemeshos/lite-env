@@ -19,7 +19,7 @@
         "iconColor": "rgba(255, 96, 96, 1)",
         "limit": 100,
         "name": "Layer Tick",
-        "query": "container_name: \"$instance\" AND log: \"{M: \\\"release tick\\\"}\"",
+        "query": "container_name: \"/bs_node\" AND log: \"{M: \\\"release tick\\\"}\"",
         "showIn": 0,
         "tags": [],
         "textField": "log",
@@ -33,7 +33,7 @@
         "iconColor": "#FF9830",
         "limit": 100,
         "name": "Started Hare",
-        "query": "container_name: \"$instance\" AND log: \"{M: \\\"Consensus Process Started\\\"}\"",
+        "query": "container_name: \"/bs_node\" AND log: \"{M: \\\"Consensus Process Started\\\"}\"",
         "showIn": 0,
         "tags": [],
         "textField": "log",
@@ -47,7 +47,7 @@
         "iconColor": "#5794F2",
         "limit": 100,
         "name": "Finished Hare",
-        "query": "container_name: \"$instance\" AND log: \"{M: \\\"Consensus Process terminated\\\"}\"",
+        "query": "container_name: \"/bs_node\" AND log: \"{M: \\\"Consensus Process terminated\\\"}\"",
         "showIn": 0,
         "tags": [],
         "textField": "log",
@@ -60,7 +60,6 @@
   "editable": true,
   "gnetId": 10826,
   "graphTooltip": 0,
-  "id": 1,
   "iteration": 1577376461489,
   "links": [],
   "panels": [
@@ -1385,7 +1384,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 21,
   "style": "dark",
   "tags": [
@@ -1398,7 +1397,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
           "text": "/sm_node_1",
           "value": "/sm_node_1"
         },
@@ -1414,7 +1412,7 @@
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 3,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -1455,5 +1453,5 @@
   "timezone": "utc",
   "title": "Go Metrics",
   "uid": "CgCw8jKZz",
-  "version": 2
+  "version": 1
 }

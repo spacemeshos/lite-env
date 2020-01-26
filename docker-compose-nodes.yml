@@ -1,0 +1,131 @@
+version: "3.7"
+
+services:
+  bs_node:
+    container_name: bs_node
+    image: spacemeshos/go-spacemesh:develop
+    labels:
+      - "app=go-spacemesh"
+      - "bootstrap"
+      - "gateway"
+      - "miner"
+    env_file: ./config.env
+    environment:
+      - BOOTSTRAP=false
+      - POET_URL=$POET_URL
+      - BS_NODE_URL=$BS_NODE_URL
+      - GENESIS_SEC_DELAY=60
+    volumes:
+      - conf:/root/config/
+      - ./node-entrypoint.sh:/entrypoint.sh
+      - ./config/config.toml.tmpl:/root/config/config.toml.tmpl
+      - /root
+    entrypoint: sh /entrypoint.sh
+    ports:
+      - 9091:9091
+      - 9999:9090
+      - 7513:7513
+      - 7513:7513/udp
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "1g"
+    cap_add:
+      - NET_ADMIN
+    extra_hosts:
+      - "0.pool.ntp.org:169.254.169.254"
+      - "1.pool.ntp.org:169.254.169.254"
+      - "time.google.com:169.254.169.254"
+      - "time1.google.com:169.254.169.254"
+      - "time.asia.apple.com:169.254.169.254"
+      - "time.americas.apple.com:169.254.169.254"
+  
+  node:
+    image: spacemeshos/go-spacemesh:develop
+    labels:
+      - "app=go-spacemesh"
+      - "miner"
+    env_file: ./config.env
+    environment:
+      - BOOTSTRAP=true
+      - POET_URL=$POET_URL
+      - BS_NODE_URL=$BS_NODE_URL
+    volumes:
+      - conf:/root/config/:ro
+      - ./node-entrypoint.sh:/entrypoint.sh
+      - /root
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    entrypoint: sh /entrypoint.sh
+    ports:
+      - 7513
+      - 7513/udp
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "1g"
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      - bs_node
+    extra_hosts:
+      - "0.pool.ntp.org:169.254.169.254"
+      - "1.pool.ntp.org:169.254.169.254"
+      - "time.google.com:169.254.169.254"
+      - "time1.google.com:169.254.169.254"
+      - "time.asia.apple.com:169.254.169.254"
+      - "time.americas.apple.com:169.254.169.254"
+
+  filebeat:
+    container_name: filebeat
+    image: docker.elastic.co/beats/filebeat:7.5.1
+    user: root
+    environment:
+      - COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
+      - ELASTICSEARCH_URL=$ELASTICSEARCH_URL
+    volumes:
+      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - filebeat:/usr/share/filebeat/data
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "5g"
+  
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.15.2
+    env_file: ./config.env
+    environment:
+      - COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
+      - PROMETHEUS_URL=$PROMETHEUS_URL
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+
+  miniserve:
+    container_name: miniserve
+    image: svenstaro/miniserve:alpine
+    volumes:
+      - conf:/root/config/:ro
+    ports:
+      - 80:8080
+    entrypoint: |
+      /bin/sh -c "
+      until [ -f /root/config/config.toml ]; do sleep 1; done
+      /app/miniserve /root/config/config.toml
+      "
+
+volumes:
+  conf:
+  filebeat:

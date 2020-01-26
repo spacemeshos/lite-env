@@ -8,65 +8,16 @@ scrape_configs:
     scrape_interval: 5s
     scrape_timeout: 2s
 
-    # dns_sd_configs:
-    #   - names:
-    #     - node
-    #     type: 'A'
-    #     port: 2020
-        
     static_configs:
       - targets:
-        - 'sm_node_1:2020'
-        - 'sm_node_2:2020'
-        - 'sm_node_3:2020'
-        - 'sm_node_4:2020'
-        - 'sm_node_5:2020'
-        - 'sm_node_6:2020'
-        - 'sm_node_7:2020'
-        - 'sm_node_8:2020'
-        - 'sm_node_9:2020'
-        - 'sm_node_10:2020'
-        - 'sm_node_11:2020'
-        - 'sm_node_12:2020'
-        - 'sm_node_13:2020'
-        - 'sm_node_14:2020'
-        - 'sm_node_15:2020'
-        - 'sm_node_16:2020'
-        - 'sm_node_17:2020'
-        - 'sm_node_18:2020'
-        - 'sm_node_19:2020'
-        - 'sm_node_20:2020'
-        - 'sm_node_21:2020'
-        - 'sm_node_22:2020'
-        - 'sm_node_23:2020'
-        - 'sm_node_24:2020'
-        - 'sm_node_25:2020'
-        - 'sm_node_26:2020'
-        - 'sm_node_27:2020'
-        - 'sm_node_28:2020'
-        - 'sm_node_29:2020'
-        - 'sm_node_30:2020'
-        - 'sm_node_31:2020'
-        - 'sm_node_32:2020'
-        - 'sm_node_33:2020'
-        - 'sm_node_34:2020'
-        - 'sm_node_35:2020'
-        - 'sm_node_36:2020'
-        - 'sm_node_37:2020'
-        - 'sm_node_38:2020'
-        - 'sm_node_39:2020'
-        - 'sm_node_40:2020'
-        - 'sm_node_41:2020'
-        - 'sm_node_42:2020'
-        - 'sm_node_43:2020'
-        - 'sm_node_44:2020'
-        - 'sm_node_45:2020'
-        - 'sm_node_46:2020'
-        - 'sm_node_47:2020'
-        - 'sm_node_48:2020'
-        - 'sm_node_49:2020'
-        - 'sm_node_50:2020'
+        - 'bs_node:2020'
 
+    dns_sd_configs:
+      - names:
+        - node
+        type: 'A'
+        port: 2020
+        
     relabel_configs:
       - source_labels: [__address__]
         regex: "([^:]+):\\d+"
