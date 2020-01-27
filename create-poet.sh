@@ -23,6 +23,7 @@ gcloud compute instances create-with-container poet \
   --container-arg="--restlisten=0.0.0.0:8080" \
   --container-arg="--jsonlog" \
   --container-arg="--n=$NUM_LEAVES" \
+  --container-arg="--reset" \
   --machine-type=e2-highcpu-2 \
   --boot-disk-type=pd-ssd \
   --boot-disk-size=10GB \
