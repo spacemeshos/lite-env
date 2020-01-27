@@ -6,9 +6,10 @@ layers-per-epoch = "${LAYERS_PER_EPOCH}"
 genesis-active-size = "${GENESIS_ACTIVE_SIZE}"
 poet-server = "${POET_URL}:50002"
 sync-request-timeout = "${SYNC_REQUEST_TIMEOUT}"
+hdist = "${HDIST}"
 
 [p2p]
-network-id = "${NET_ID}"
+network-id = "${NETWORK_ID}"
 
 [p2p.swarm]
 bootstrap = ${BOOTSTRAP}
@@ -25,9 +26,33 @@ hare-committee-size = "${HARE_COMMITTEE_SIZE}"
 hare-max-adversaries = "${HARE_MAX_ADVERSARIES}"
 hare-exp-leaders = "${HARE_EXP_LEADERS}"
 hare-wakeup-delta = "${HARE_WAKEUP_DELTA}"
+hare-limit-iterations = "${HARE_LIMIT_ITERATIONS}"
 
 [hare-eligibility]
 eligibility-confidence-param = "${ELIGIBILITY_CONFIDENCE_PARAM}"
 eligibility-epoch-offset = "${ELIGIBILITY_EPOCH_OFFSET}"
 
 [logging]
+app = "${APP}"
+post = "${POST}"
+stateDb= "${STATEDB}"
+state = "${STATE}"
+atxDb = "${ATXDB}"
+poetDb = "${POETDB}"
+store = "${STORE}"
+poetDb = "${POETDB}"
+meshDb = "${MESHDB}"
+trtl = "${TRTL}"
+atxDb = "${ATXDB}"
+block-eligibility = "${BLOCK_ELIGIBILITY}"
+mesh = "${MESH}"
+sync = "${SYNC}"
+block-oracle = "${BLOCK_ORACLE}"
+hare-oracle = "${HARE_ORACLE}"
+hare = "${HARE}"
+block-builder = "${BLOCK_BUILDER}"
+block-listener = "${BLOCK_LISTENER}"
+poet = "${POET}"
+nipst = "${NIPST}"
+atx-builder = "${ATX_BUILDER}"
+hare-beacon = "${HARE_BEACON}"
