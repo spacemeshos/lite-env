@@ -22,5 +22,7 @@ output.elasticsearch:
   indices:
     - index: "sm-%{+yyyy.MM.dd-HH:mm}"
 
+setup.kibana.host: "${ELASTICSEARCH_URL}:5601"
+
 logging.json: true
 logging.metrics.enabled: false

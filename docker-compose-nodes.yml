@@ -53,7 +53,6 @@ services:
       - BS_NODE_URL=$BS_NODE_URL
       - EXT_IP=$EXT_IP
     volumes:
-      - conf:/root/config/:ro
       - ./node-entrypoint.sh:/entrypoint.sh
       - /root
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -83,7 +82,6 @@ services:
     image: docker.elastic.co/beats/filebeat:7.5.1
     user: root
     environment:
-      - COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
       - ELASTICSEARCH_URL=$ELASTICSEARCH_URL
     volumes:
       - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
@@ -99,10 +97,6 @@ services:
   prometheus:
     container_name: prometheus
     image: prom/prometheus:v2.15.2
-    env_file: ./config.env
-    environment:
-      - COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
-      - PROMETHEUS_URL=$PROMETHEUS_URL
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - /prometheus

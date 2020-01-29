@@ -33,6 +33,7 @@ set -o xtrace
     --test-mode \
     --grpc-server \
     --json-server \
+    --metrics-port 2020 \
     --metrics \
     --start-mining \
     --coinbase $COINBASE \
