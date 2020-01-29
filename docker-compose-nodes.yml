@@ -14,6 +14,7 @@ services:
       - BOOTSTRAP=false
       - POET_URL=$POET_URL
       - BS_NODE_URL=$BS_NODE_URL
+      - EXT_IP=$EXT_IP
       - GENESIS_SEC_DELAY=60
     volumes:
       - conf:/root/config/
@@ -49,8 +50,8 @@ services:
     env_file: ./config.env
     environment:
       - BOOTSTRAP=true
-      - POET_URL=$POET_URL
       - BS_NODE_URL=$BS_NODE_URL
+      - EXT_IP=$EXT_IP
     volumes:
       - conf:/root/config/:ro
       - ./node-entrypoint.sh:/entrypoint.sh
