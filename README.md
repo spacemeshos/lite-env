@@ -11,7 +11,7 @@ Starts a new network on existing VM's (without recreating them) using a fresh `.
 
 ### Connect your own miner:
 * Download `config.toml` from: http://nodes.unruly.io  
-* Run: `go-spacemesh --config ./config.toml --start-mining --coinbase <account num> --tcp-port <listening port>`
+* Run: `go-spacemesh --start-mining --coinbase <account num> --tcp-port <listening port>`
 
 **Metrics and logs:**  
 
@@ -29,4 +29,4 @@ Starts a new network on existing VM's (without recreating them) using a fresh `.
 |SSH into a container | `--container <container name>`|
 |Tail a container's log | `--command "docker logs <container name> -f"`|
 |Follow VM's process | `--command "sudo toolbox bash -c 'htop'" -- -t`|
-|Get VM's disk usage | `--command "df -h /dev/sda1`|
+|Get VM's disk usage | `--command "df -h /dev/sda1"`|
