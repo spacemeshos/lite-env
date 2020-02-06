@@ -43,8 +43,8 @@ set +o xtrace
 
 bg_pid=$!
 
-until [ -d /root/spacemesh/nodes ]; do sleep 1; done
-export P2P="\"spacemesh://`ls /root/spacemesh/nodes`@${EXT_IP}:${EXT_PORT}\""
+until [ -d /root/spacemesh/p2p/nodes ]; do sleep 1; done
+export P2P="\"spacemesh://`ls /root/spacemesh/p2p/nodes`@${EXT_IP}:${EXT_PORT}\""
 echo "P2P: $P2P"
 
 if ! $BOOTSTRAP ; then
