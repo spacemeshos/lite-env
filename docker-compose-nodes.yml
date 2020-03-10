@@ -3,7 +3,7 @@ version: "3.7"
 services:
   bs_node:
     container_name: bs_node
-    image: spacemeshos/go-spacemesh:develop
+    image: spacemeshos/go-spacemesh:v0.1.3
     labels:
       - "app=go-spacemesh"
       - "bootstrap"
@@ -41,9 +41,9 @@ services:
       - "time1.google.com:169.254.169.254"
       - "time.asia.apple.com:169.254.169.254"
       - "time.americas.apple.com:169.254.169.254"
-  
+
   node:
-    image: spacemeshos/go-spacemesh:develop
+    image: spacemeshos/go-spacemesh:v0.1.3
     labels:
       - "app=go-spacemesh"
       - "miner"
@@ -93,7 +93,7 @@ services:
       options:
         max-file: "5"
         max-size: "5g"
-  
+
   prometheus:
     container_name: prometheus
     image: prom/prometheus:v2.15.2
